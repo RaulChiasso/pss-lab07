@@ -32,7 +32,7 @@ public class TestSimpleBankAccount {
     }    
 
     @Test
-    public void testDeposit(){
+    public void testDeposit() {
         double depositPositive = 1000;
         double depositNegative = -1000;
         accountRossi.deposit(1, depositPositive);
@@ -52,27 +52,27 @@ public class TestSimpleBankAccount {
     }
 
     @Test
-    public void testDepositFromATM(){
+    public void testDepositFromATM() {
         double depositPositive = 1000;
         double depositNegative = -1000;
         accountRossi.depositFromATM(1, depositPositive);
         accountBianchi.depositFromATM(2, depositPositive);
-        Assertions.assertEquals(accountRossi.getBalance(), 1000-SimpleBankAccount.ATM_TRANSACTION_FEE);
-        Assertions.assertEquals(accountBianchi.getBalance(), 1000-SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountRossi.getBalance(), 1000 - SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), 1000 - SimpleBankAccount.ATM_TRANSACTION_FEE);
         accountRossi.deposit(1, depositNegative);
         accountBianchi.deposit(2, depositNegative);
-        Assertions.assertEquals(accountRossi.getBalance(), 1000-SimpleBankAccount.ATM_TRANSACTION_FEE);
-        Assertions.assertEquals(accountBianchi.getBalance(), 1000-SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountRossi.getBalance(), 1000 - SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), 1000 - SimpleBankAccount.ATM_TRANSACTION_FEE);
         accountRossi.deposit(2, depositPositive);
         accountBianchi.deposit(1, depositPositive);
-        Assertions.assertNotEquals(accountRossi.getBalance(), 2000-2*SimpleBankAccount.ATM_TRANSACTION_FEE);
-        Assertions.assertNotEquals(accountBianchi.getBalance(), 2000-2*SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertNotEquals(accountRossi.getBalance(), 2000 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertNotEquals(accountBianchi.getBalance(), 2000 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
         Assertions.assertEquals(accountRossi.getTransactionsCount(), 1);
         Assertions.assertEquals(accountBianchi.getTransactionsCount(), 1);
     }
 
     @Test
-    public void testWithdraw(){
+    public void testWithdraw() {
         double withdrawPositive = 500;
         double withdrawNegative = -500;
         double depositPositive = 1000;
@@ -82,20 +82,24 @@ public class TestSimpleBankAccount {
         accountBianchi.withdraw(2, withdrawPositive);
         Assertions.assertEquals(accountRossi.getBalance(), 500);
         Assertions.assertEquals(accountBianchi.getBalance(), 500);
+        accountRossi.withdraw(1, 2*withdrawPositive);
+        accountBianchi.withdraw(2, 2*withdrawPositive);
+        Assertions.assertEquals(accountRossi.getBalance(), -500);
+        Assertions.assertEquals(accountBianchi.getBalance(), -500);
         accountRossi.withdraw(1, withdrawNegative);
         accountBianchi.withdraw(2, withdrawNegative);
-        Assertions.assertEquals(accountRossi.getBalance(), 500);
-        Assertions.assertEquals(accountBianchi.getBalance(), 500);
+        Assertions.assertEquals(accountRossi.getBalance(), -500);
+        Assertions.assertEquals(accountBianchi.getBalance(), -500);
         accountRossi.withdraw(2, withdrawPositive);
         accountBianchi.withdraw(1, withdrawPositive);
-        Assertions.assertNotEquals(accountRossi.getBalance(), 0);
-        Assertions.assertNotEquals(accountBianchi.getBalance(), 0);
-        Assertions.assertEquals(accountRossi.getTransactionsCount(), 2);
-        Assertions.assertEquals(accountBianchi.getTransactionsCount(), 2);
+        Assertions.assertNotEquals(accountRossi.getBalance(), -1000);
+        Assertions.assertNotEquals(accountBianchi.getBalance(), -1000);
+        Assertions.assertEquals(accountRossi.getTransactionsCount(), 3);
+        Assertions.assertEquals(accountBianchi.getTransactionsCount(), 3);
     }
 
     @Test
-    public void testWithdrawFromATM(){
+    public void testWithdrawFromATM() {
         double withdrawPositive = 500;
         double withdrawNegative = -500;
         double depositPositive = 1000;
@@ -103,35 +107,39 @@ public class TestSimpleBankAccount {
         accountBianchi.deposit(2, depositPositive);
         accountRossi.withdrawFromATM(1, withdrawPositive);
         accountBianchi.withdrawFromATM(2, withdrawPositive);
-        Assertions.assertEquals(accountRossi.getBalance(), 500-SimpleBankAccount.ATM_TRANSACTION_FEE);
-        Assertions.assertEquals(accountBianchi.getBalance(), 500-SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountRossi.getBalance(), 500 - SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), 500 - SimpleBankAccount.ATM_TRANSACTION_FEE);
+        accountRossi.withdrawFromATM(1, 2*withdrawPositive);
+        accountBianchi.withdrawFromATM(2, 2*withdrawPositive);
+        Assertions.assertEquals(accountRossi.getBalance(), -500 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), -500 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
         accountRossi.withdrawFromATM(1, withdrawNegative);
         accountBianchi.withdrawFromATM(2, withdrawNegative);
-        Assertions.assertEquals(accountRossi.getBalance(), 500-SimpleBankAccount.ATM_TRANSACTION_FEE);
-        Assertions.assertEquals(accountBianchi.getBalance(), 500-SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountRossi.getBalance(), -500 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), -500 - 2 * SimpleBankAccount.ATM_TRANSACTION_FEE);
         accountRossi.withdrawFromATM(2, withdrawPositive);
         accountBianchi.withdrawFromATM(1, withdrawPositive);
         Assertions.assertNotEquals(accountRossi.getBalance(), 0);
         Assertions.assertNotEquals(accountBianchi.getBalance(), 0);
-        Assertions.assertEquals(accountRossi.getTransactionsCount(), 2);
-        Assertions.assertEquals(accountBianchi.getTransactionsCount(), 2);
+        Assertions.assertEquals(accountRossi.getTransactionsCount(), 3);
+        Assertions.assertEquals(accountBianchi.getTransactionsCount(), 3);
     }
 
     @Test
-    public void testGetAccountHolder(){
+    public void testGetAccountHolder() {
         Assertions.assertEquals(accountRossi.getAccountHolder(), aRossi);
         Assertions.assertEquals(accountBianchi.getAccountHolder(), aBianchi);
     }
 
     @Test
-    public void testChargeManagementFees(){
+    public void testChargeManagementFees() {
         double depositPositive = 1000;
         accountRossi.deposit(1, depositPositive);
         accountBianchi.deposit(2, depositPositive);
         accountRossi.chargeManagementFees(1);
         accountBianchi.chargeManagementFees(2);
-        Assertions.assertEquals(accountRossi.getBalance(), 1000-SimpleBankAccount.MANAGEMENT_FEE);
-        Assertions.assertEquals(accountBianchi.getBalance(), 1000-SimpleBankAccount.MANAGEMENT_FEE);
+        Assertions.assertEquals(accountRossi.getBalance(), 1000 - SimpleBankAccount.MANAGEMENT_FEE);
+        Assertions.assertEquals(accountBianchi.getBalance(), 1000 - SimpleBankAccount.MANAGEMENT_FEE);
         Assertions.assertEquals(accountRossi.getTransactionsCount(), 0);
         Assertions.assertEquals(accountBianchi.getTransactionsCount(), 0);
     }
